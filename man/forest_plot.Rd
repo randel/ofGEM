@@ -7,27 +7,36 @@
 forest_plot(coef, se, sort = TRUE, exp = FALSE)
 }
 \arguments{
-\item{coef}{the matrix for the GxE coefficients. Each row represents a SNP, and each column denotes a study. If the matrix
-has colnames and/or rownames for SNPs and studies respectively. They will be shown in the forest plot. 
-This is the coefficients from linear regression or generalized liear models.}
+\item{coef}{a matrix contains the GxE effect sizes. Each row corresponds to
+a SNP in a set, and each column represents a study. If the matrix has
+colnames and/or rownames for SNPs and studies respectively, they will be
+used as labels in the forest plot.}
 
-\item{se}{the matrix for the stand errors for GxE estimates. Each row represents a SNP, and each column denotes a study.}
+\item{se}{a matrix contains the standard errors for the GxE effect
+estimates. Each row corresponds to a SNP in a set, and each column
+represents a study.}
 
-\item{sort}{logical. If TRUE, the SNPs are ordered by the mean effect sizes across different studies. The default is TRUE.}
+\item{sort}{logical. If TRUE, the SNPs are sorted by averaged effect sizes
+across different studies. The default is TRUE.}
 
-\item{exp}{logical. If TRUE, coef will be exponential transformed. This works for coefs obtained from logistic regressions.
-The default is FALSE.}
+\item{exp}{logical. If TRUE, coef will be exponentiated. This option is
+mainly used for log odds ratios obtained from logistic regressions. The
+default is FALSE.}
 }
 \value{
-A forest plot for each study ordered by SNPs.
+A forest plot across multiple sub-studies for all the SNPs in a set
+(e.g., a gene).
 }
 \description{
-It makes a forest plot for gene-environment interactions (GxE) for each study and each SNP in a gene
+It makes a forest plot for gene-environment interactions (GxE) across
+multiple sub-studies for all the SNPs in a set (e.g., a gene).
 }
 \examples{
+
 
 coef = matrix(rnorm(6 * 6), 6, 6)
 se = matrix(abs(runif(6 * 6, 0.1, 0.15)), 6, 6)
 
 forest_plot(coef, se)
+
 }

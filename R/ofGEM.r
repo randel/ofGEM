@@ -1,46 +1,65 @@
-#' A meta-analysis approach with filtering for identifying gene-level gene-environment interactions with genetic association data
+#' A meta-analysis approach with filtering for identifying gene-level
+#' gene-environment interactions with genetic association data
 #' 
-#'This function first conducts a meta-filtering test to filter out unpromising SNPs. It then runs a test of omnibus-filtering-based GxE meta-analysis (ofGEM) that combines the strengths of the fixed- and random-effects meta-analysis with meta-filtering. It can also analyze data from multiple ethnic groups. The p-values are calculated using a sequential sampling approach.
+#' This function first conducts a meta-filtering test to filter out unpromising
+#' SNPs. It then runs a test of omnibus-filtering-based GxE meta-analysis
+#' (ofGEM) that combines the strengths of the fixed- and random-effects
+#' meta-analysis with meta-filtering. It can also analyze data from multiple
+#' ethnic groups. The p-values are calculated using a sequential sampling
+#' approach.
 #' 
 #' 
-#' @param Z the test statistics for gene-environment interactions (GxE). Each row is a SNP, and each column is a study. For multi-ethnic groups,
-#' Z is a list with each element as a matrix for each ethnic group.
-#' @param X the filtering statistics for GxE. Each row is a SNP, and each column is a study. For multi-ethnic groups,
-#' X is a list with each element as a matrix for each ethnic group.
-#' @param R the correlation matrix to simulate test and filtering statistics under the null distribution. 
-#' The simulated test and filtering statistics are used for testing. For multi-ethnic groups,
-#' R is a list with each element as a correlation matrix for each ethnic group.
-#' @param weight the weight vector for each study, or the weight matrix for each SNP and each study. If the weight is common
-#' across SNPs, it is a vector with a length equal to the number of studies. If the weight is different across SNPs, it is a matrix
-#' with each row for a SNP and each column as a study.
-#' @param threshold a fixed p-value threshold for filtering. The default is 0.1.
-#' @param maxSim the maximum number of samples to be simulated for the test and filtering statistics under the null. The default is 1e6.
-#' @param tol the tolerance number to stop the sequential sampling procedure. We count the number of simulated test statistics
-#' with an absolute value larger than that of the calculated one based on the data, for every 100 simulations. 
-#' The sampling will stop if the count reaches tol. The default is 10. If tol = 0, the number
-#' of simulations equals to maxSim.
-#' 
-#' @return A list containing
-#' \item{pval_random_mf}{the p-value based on random-effects meta-analysis with meta-filtering.}
-#' \item{pval_fixed_mf}{the p-value based on fixed-effects meta-analysis with meta-filtering.}
-#' \item{pval_ofGEM}{the p-value based on aggregating the p-values of fixed- and random-effects meta-analyses with meta-filtering 
-#' using Fisher's method.}
-#' \item{nsim}{the number of simulations that are performed.}
-#' 
-#' @references Wang, Liu, Pierce, Huo, Nicolae, Olopade, Ahsan, & Chen (2017+). A meta-analysis approach with filtering for 
-#' identifying gene-level gene-environment interactions with genetic association data. In preparation.
-#' 
-#' @export
-#' @import MASS CompQuadForm
-#' @importFrom stats pchisq qnorm
-#' 
+#' @param Z a matrix of test statistics for gene-environment interactions (GxE)
+#' from consortium data. Each row corresponds to a SNP in a set (e.g., a gene),
+#' and each column represents a study. For multi-ethnic groups, Z is a list
+#' with each element being the matrix for each ethnic group.
+#' @param X a matrix of filtering statistics for GxE. Each row corresponds to a
+#' SNP in a set, and each column represents a study. For multi-ethnic groups, X
+#' is a list with each element being the matrix for each ethnic group.
+#' @param R the correlation matrix of test statistics for SNPs in a set. One
+#' may use the genotype LD matrix for the set of SNPs to approximate it. This
+#' matrix is used when sampling correlated testing and filtering statistics
+#' under the null hypothesis and to obtain the null meta-analysis statistics.
+#' For multi-ethnic groups, R is a list with each element being the correlation
+#' matrix for each ethnic group.
+#' @param weight the weight vector for each study, or the weight matrix for
+#' each SNP and each study. If the weight is the same across SNPs, it is a
+#' vector with length equaling to the number of studies. If the weight is
+#' different for different SNPs, it is a matrix with each row corresponding to
+#' each SNP and each column representing each study.
+#' @param threshold a fixed p-value threshold for filtering test. The default
+#' is 0.1.
+#' @param maxSim the maximum number of samplings performed in obtaining the
+#' sets of correlated testing and filtering statistics under the null. The
+#' default is 1e6. This number determines the precision of the p-value
+#' calculation.
+#' @param tol the tolerance number to stop the sequential sampling procedure.
+#' The default is 10. We count the number of sampling-based null
+#' meta-statistics that is more extreme than the observed meta-statistics. We
+#' sequentially increase the number of sampling with an increment of 100. The
+#' sequential sampling will stop if the cumulative count reaches tol. The idea
+#' is to stop pursuing a higher precision with more sampling of null if the
+#' p-value appears to be not significant. If tol = 0, the number of samplings
+#' equals to maxSim.
+#' @return A list containing \item{pval_random_mf}{the p-value based on the
+#' random-effects meta-analysis test with its corresponding meta-filtering.}
+#' \item{pval_fixed_mf}{the p-value based on the fixed-effects meta-analysis
+#' test with its corresponding meta-filtering.} \item{pval_ofGEM}{the p-value
+#' based on using Fisher's method to aggregating the p-values of fixed- and
+#' random-effects meta-analysis tests with meta-filtering} \item{nsim}{the
+#' number of samplings being performed.}
+#' @references Wang, Liu, Pierce, Huo, Olopade, Ahsan, & Chen (2017+). A
+#' meta-analysis approach with filtering for identifying gene-level
+#' gene-environment interactions with genetic association data. Submitted.
 #' @examples
+#' 
 #' 
 #' data(sim_dat)
 #' 
 #' pval = ofGEM(Z = sim_dat$Z, X = sim_dat$X, R = sim_dat$R, weight = rep(1/6, 6))
 #' 
-
+#' 
+#' @export ofGEM
 
 ofGEM = function(Z, X, R, weight, threshold = 0.1, maxSim = 1e6, tol = 10) {
   
@@ -109,7 +128,7 @@ ofGEM = function(Z, X, R, weight, threshold = 0.1, maxSim = 1e6, tol = 10) {
     nsim = 100
     count = sim(n = nsim, R, weight, threshold, T_random_mf, T_fixed_mf)
     
-    while (!all(count >= 10, na.rm = T) & nsim < maxSim) {
+    while (!all(count >= tol, na.rm = T) & nsim < maxSim) {
       
       count = count + sim(n=100, R, weight, threshold, T_random_mf, T_fixed_mf)
       nsim = nsim + 100

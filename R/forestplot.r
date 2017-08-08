@@ -1,26 +1,32 @@
 #' Forest plot
 #' 
-#' It makes a forest plot for gene-environment interactions (GxE) for each study and each SNP in a gene
+#' It makes a forest plot for gene-environment interactions (GxE) across
+#' multiple sub-studies for all the SNPs in a set (e.g., a gene).
 #' 
-#' @param coef the matrix for the GxE coefficients. Each row represents a SNP, and each column denotes a study. If the matrix
-#' has colnames for studies and/or rownames for SNPs, they will be shown in the forest plot. 
-#' This is the coefficients from linear regression or generalized liear models.
-#' @param se the matrix for the stand errors for GxE estimates. Each row represents a SNP, and each column denotes a study.
-#' @param sort logical. If TRUE, the SNPs are ordered by the mean effect sizes across different studies. The default is TRUE.
-#' @param exp logical. If TRUE, coef will be exponentially transformed. This works for coefs obtained from logistic regressions.
-#' The default is FALSE.
 #' 
-#' @return A forest plot for each study ordered by SNPs.
-#' @export
-#' @import forestplot
-#' @importFrom stats qnorm
-#' @importFrom grid gpar
+#' @param coef a matrix contains the GxE effect sizes. Each row corresponds to
+#' a SNP in a set, and each column represents a study. If the matrix has
+#' colnames and/or rownames for SNPs and studies respectively, they will be
+#' used as labels in the forest plot.
+#' @param se a matrix contains the standard errors for the GxE effect
+#' estimates. Each row corresponds to a SNP in a set, and each column
+#' represents a study.
+#' @param sort logical. If TRUE, the SNPs are sorted by averaged effect sizes
+#' across different studies. The default is TRUE.
+#' @param exp logical. If TRUE, coef will be exponentiated. This option is
+#' mainly used for log odds ratios obtained from logistic regressions. The
+#' default is FALSE.
+#' @return A forest plot across multiple sub-studies for all the SNPs in a set
+#' (e.g., a gene).
 #' @examples
 #' 
-#' coef = matrix(rnorm(6*6), 6, 6)
-#' se = matrix(abs(runif(6*6, 0.1, 0.15)), 6, 6)
+#' 
+#' coef = matrix(rnorm(6 * 6), 6, 6)
+#' se = matrix(abs(runif(6 * 6, 0.1, 0.15)), 6, 6)
 #' 
 #' forest_plot(coef, se)
+#' 
+#' @export forest_plot
 
 forest_plot = function(coef, se, sort = TRUE, exp = FALSE) {
   

@@ -2,9 +2,3 @@
 
 export(forest_plot)
 export(ofGEM)
-import(CompQuadForm)
-import(MASS)
-import(forestplot)
-importFrom(grid,gpar)
-importFrom(stats,pchisq)
-importFrom(stats,qnorm)
