@@ -1,10 +1,10 @@
 Package: ofGEM
 Title: A Meta-Analysis Approach with Filtering for Identifying Gene-Level Gene-Environment Interactions with Genetic Association Data
 Version: 1.0
-Date: 2017-07-20
+Date: 2018-07-06
 Author: Jiebiao Wang, Qianying Liu and Lin S. Chen
 Maintainer: Jiebiao Wang <randel.wang@gmail.com>
-Description: Offers a gene-based meta-analysis test with filtering to detect gene-environment interactions (GxE) with association data. It first conducts a meta-filtering test to filter out unpromising SNPs by combining all samples in the consortia data. It then runs a test of omnibus-filtering-based GxE meta-analysis (ofGEM) that combines the strengths of the fixed- and random-effects meta-analysis with meta-filtering. It can also analyze data from multiple ethnic groups. 
+Description: Offers a gene-based meta-analysis test with filtering to detect gene-environment interactions (GxE) with association data, proposed by Wang et al. (2018) <doi:10.1002/gepi.22115>. It first conducts a meta-filtering test to filter out unpromising SNPs by combining all samples in the consortia data. It then runs a test of omnibus-filtering-based GxE meta-analysis (ofGEM) that combines the strengths of the fixed- and random-effects meta-analysis with meta-filtering. It can also analyze data from multiple ethnic groups. 
 License: GPL
 Depends:
     CompQuadForm, MASS, forestplot

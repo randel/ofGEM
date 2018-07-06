@@ -2,3 +2,9 @@
 
 export(forest_plot)
 export(ofGEM)
+importFrom("stats", "pchisq", "qnorm")
+importFrom(MASS, mvrnorm)
+importFrom(CompQuadForm, davies)
+importFrom(forestplot, forestplot)
+importFrom(forestplot, fpColors)
+importFrom(grid, gpar)

@@ -74,7 +74,8 @@ pval = ofGEM(Z = sim_dat$Z, X = sim_dat$X, R = sim_dat$R, weight = rep(1/6, 6))
 
 }
 \references{
-Wang, Liu, Pierce, Huo, Olopade, Ahsan, & Chen (2017+). A
-meta-analysis approach with filtering for identifying gene-level
-gene-environment interactions with genetic association data. Submitted.
+Wang, Jiebiao, Qianying Liu, Brandon L. Pierce, Dezheng Huo, 
+Olufunmilayo I. Olopade, Habibul Ahsan, and Lin S. Chen. 
+"A meta-analysis approach with filtering for identifying gene-level gene-environment interactions."
+ Genetic epidemiology (2018). https://doi.org/10.1002/gepi.22115
 }

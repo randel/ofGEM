@@ -48,9 +48,10 @@
 #' based on using Fisher's method to aggregating the p-values of fixed- and
 #' random-effects meta-analysis tests with meta-filtering} \item{nsim}{the
 #' number of samplings being performed.}
-#' @references Wang, Liu, Pierce, Huo, Olopade, Ahsan, & Chen (2017+). A
-#' meta-analysis approach with filtering for identifying gene-level
-#' gene-environment interactions with genetic association data. Submitted.
+#' @references Wang, Jiebiao, Qianying Liu, Brandon L. Pierce, Dezheng Huo, 
+#' Olufunmilayo I. Olopade, Habibul Ahsan, and Lin S. Chen. 
+#' "A meta-analysis approach with filtering for identifying gene-level gene-environment interactions."
+#'  Genetic epidemiology (2018). https://doi.org/10.1002/gepi.22115
 #' @examples
 #' 
 #' 
